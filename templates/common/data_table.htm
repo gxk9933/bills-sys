@@ -1,0 +1,148 @@
+<{include file="header.tpl"}>
+<div class="ui-tabs ui-widget ui-widget-content ui-corner-all <{$otherData.tipsID}>" style="margin-bottom:8px; padding:10px; display:none;">
+	<span style="float:right"><a class="close" href="#" onClick="$(this).parent().parent().slideUp();">X</a></span>
+	<div id="TipsCont"></div>
+</div>
+<!-- 
+使用方法：
+1. 在$otherData中传入标识唯一的tipsID作为class
+2. 需要tips数据时：
+    $('.tipsID').slideDown();
+    $('.tipsID').children("#TipsCont").html(html);
+ -->
+
+<div class="ui-tabs ui-widget ui-widget-content ui-corner-all" id="<{$otherData.id}>" style=" overflow:auto; zoom:1;">
+	<div id="datatable_header">
+	<{$otherData.header}>
+	</div>
+	<div class="datatable_search" style="padding:5px;<{if $otherData.datatable_search_style}><{$otherData.datatable_search_style}><{/if}>">
+	    <div class="search_content">
+	    <{if $otherData.searchHeader}>
+		    <div class="search_float">
+		    <{$otherData.searchHeader}>
+		    </div>
+	    <{/if}>
+	    <{foreach from=$searchFields key=key item=item}>
+		    <div class="search_float search_field field_<{$key}>" type="<{$item.type}>">
+			    <{$item.title}>:&nbsp;&nbsp;
+			    <{if $item.type == 'input'}>
+			        <input <{if $item.size}>size="<{$item.size}>"<{/if}> style="width:<{$item.input_width}>px;">
+		        <{elseif $item.type == 'date'}>
+                    <input <{if $item.size}>size="<{$item.size}>"<{/if}> style="width:<{$item.input_width}>px;" <{if $item.value}>value="<{$item.value}>"<{/if}> class="datepicker">&nbsp;&nbsp;
+			    <{elseif $item.type == 'range'}>
+			        <input <{if $item.size}>size="<{$item.size}>"<{/if}> style="width:<{$item.input_width}>px;">&nbsp;~&nbsp;
+			        <input <{if $item.size}>size="<{$item.size}>"<{/if}> style="width:<{$item.input_width}>px;">
+		        <{elseif $item.type == 'range_date'}>
+		            <input <{if $item.size}>size="<{$item.size}>"<{/if}> style="width:<{$item.input_width}>px;" class="datepicker">&nbsp;~&nbsp;
+		            <input <{if $item.size}>size="<{$item.size}>"<{/if}> style="width:<{$item.input_width}>px;" class="datepicker">
+		        <{elseif $item.type == 'range_time'}>
+		            <input <{if $item.size}>size="<{$item.size}>"<{/if}> style="width:<{$item.input_width}>px;" class="datetimepicker">&nbsp;~&nbsp;
+		            <input <{if $item.size}>size="<{$item.size}>"<{/if}> style="width:<{$item.input_width}>px;" class="datetimepicker">
+			    <{elseif $item.type == 'select'}>
+			        <select>
+				    <{foreach from=$item.value key=key item=item}>
+				    <option value="<{$key}>"><{$item}></option>
+				    <{/foreach}>
+				    </select>
+			    <{/if}>
+		    </div>
+	    <{/foreach}>
+	    <div style="float:left; padding:5px;">
+	    <input type="button" class="datatable_search_button g-button" value="<{if $searchFields}>搜索<{else}>刷新<{/if}>" />
+	    </div>
+	   	<{if $otherData.searchFooter}>
+		<div class="search_float">
+		    <{$otherData.searchFooter}>
+		</div>
+	    <{/if}>
+	    <div style="clear:both;"></div>
+	    </div>
+	</div>
+
+	<table cellpadding="0" cellspacing="0" border="0" class="table_list itable">
+	    <thead>
+	        <tr height="44px">
+	        <{foreach from=$showFields item=item}>
+	            <th <{if $item.width}>width="<{$item.width}>"<{/if}>><{$item.title}></th>
+	        <{/foreach}>
+	        </tr>
+	    </thead>
+	    <tbody>
+	        <tr>
+	            <td colspan="<{$showFields|count}>" class="dataTables_empty"></td>
+	        </tr>
+	    </tbody>
+	
+	    <tfoot>
+	        <tr>
+	            <{foreach from=$showFields item=item}>
+	            <th><{$item.title}></th>
+	            <{/foreach}>
+	        </tr>
+	    </tfoot>
+	</table>
+</div>
+<script type="text/javascript">
+$('.datepicker').datepicker();
+
+var $<{$otherData.id}> = $('#<{$otherData.id}> .table_list').dataTable({
+    "bProcessing": true,
+    "bAutoWidth":<{if $otherData.bAutoWidth == false}>false<{else}>true<{/if}>,
+    "bServerSide": true,
+    "iDisplayLength": <{$otherData.iDisplayLength}>, 
+    "bLengthChange": true,
+    "bStateSave": <{if $otherData.bStateSave == true}>true<{else}>false<{/if}>,
+    "bFilter": true,
+    "sPaginationType": "full_numbers", 
+    "sAjaxSource": "<{$ajaxSource}>",
+    "aaSorting": [[ <{$otherData.sortCol}>, "<{$otherData.sortDir}>" ]],
+    'bSort' : <{$otherData.bSort}>,
+    "oLanguage": {
+    "sUrl": "style/js/dt_cn.txt"
+    },
+    "aoColumns": [
+		<{$aoColumns}>
+     ],
+     "sDom": '<{if $otherData.sDom}><{$otherData.sDom}><{else}><"top"lp>rt<"bottom"ip><"clear"><{/if}>'
+});
+
+$('#<{$otherData.id}> .table_list tbody tr').live('mouseover', function () {
+    $(this).addClass('row_selected');
+}).live('mouseout', function () {
+    $(this).removeClass('row_selected');
+});
+
+
+$('#<{$otherData.id}> .datatable_search input').keydown( function (event) {
+    if(event.keyCode==13){
+    	$('#<{$otherData.id}> .datatable_search_button').trigger("click");
+    }
+});
+
+$('#<{$otherData.id}> .datatable_search_button').click(function(){
+	$(this).attr("disabled", "disabled");
+	var data = new Array();
+	$("#<{$otherData.id}> .search_field").each(function(){
+		var type = $(this).attr('type');
+		var value = '';
+		if(type == 'input' || type == 'select'){
+			value = $(this).find(type).val();
+		}else if(in_array(type, ['range', 'range_date', 'range_time'])){
+			var range = new Array();
+			$(this).find('input').each(function(){
+				range.push($(this).val());
+			});
+			value = range.join('|');
+		}else if(type == "date"){
+			value = $(this).find("input").val();
+		}
+		
+		data.push(value);
+	});
+	
+	$<{$otherData.id}>.fnMultiFilter(data);
+	<{if $otherData.js}><{$otherData.js}><{/if}>
+	setTimeout('$("#<{$otherData.id}> .datatable_search_button").attr("disabled", false);', 2000);
+});
+</script>
+<{include file="footer.tpl"}>

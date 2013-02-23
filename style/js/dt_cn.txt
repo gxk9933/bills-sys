@@ -1,0 +1,21 @@
+{
+	"sLengthMenu": "每页显示 _MENU_ 条记录",  
+        "sZeroRecords": "没有检索到数据",  
+	"sSearch": "",
+        "sInfo": "当前数据为从第 _START_ 到第 _END_ 条数据；总共有 _TOTAL_ 条记录",  
+	"sInfoEmpty": "当前数据为从第 0 到第 0 总共有 0 条数据",
+	"sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+	"oPaginate": {  
+                    "sFirst": "首页",  
+                    "sPrevious": "前页",
+                    "sNext": "后页",  
+                    "sLast": "尾页",
+                    "sTo": "到",
+                    "sPage": "页"
+                }, 
+
+	"sZeroRecords": "没有检索到数据",  
+	"sInfoEmtpy": "没有数据",  
+	"sProcessing": "<img src='style/images/loading.gif' />"
+}
+
