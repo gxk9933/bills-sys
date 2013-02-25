@@ -43,7 +43,7 @@
         <tr>
           <td>
           <input value="1" name="status" type="hidden"/></td>
-          <td><input type="submit" name="submit" value="确定提交" /></td>
+          <td><input type="submit" name="submit" value="确定提交" id="bill_edit_submit"/></td>
         </tr>
        
       </table>
@@ -53,10 +53,10 @@
 $('.datepicker').datepicker();
 $('#bill_edit_form').ajaxForm({
 	beforeSend: function() {
-		$("input[name='submit']").attr("disabled", "disabled");
+		$("#bill_edit_submit").attr("disabled", "disabled");
     },
     complete: function(xhr) {
-    	$("input[name='submit']").attr("disabled", false);
+    	$("#bill_edit_submit").attr("disabled", false);
         var msg = xhr.responseText;//JSON.parse();
         if(msg > 0){
         	alert('添加成功');
