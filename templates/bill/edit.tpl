@@ -43,7 +43,7 @@
         <tr>
           <td>
           <input value="1" name="status" type="hidden"/></td>
-          <td><input type="submit" name="submit" value="确定提交" id="bill_edit_submit"/></td>
+          <td><input type="submit" value="确定提交" id="bill_edit_submit"/></td>
         </tr>
        
       </table>
