@@ -106,4 +106,22 @@ class user{
         $_SESSION['bills_login_time'] = $now;
         return 1;
     }
+    
+    function changePassword($data){
+    	$now = $this->base->current_time;
+        if($data['password'] != $data['password2'])
+            return array('code' => -3);//两次密码输入不同
+        
+        
+        $uid = $_SESSION['bills_uid'];
+        $user = $this->user_table->getOneById($uid);
+        if($user['password'] != md5($data['old_password'])){
+            return array('code' => -2);
+        }
+        $data = array(
+            'uid' => $uid,
+            'password' => md5($data['password']),
+        );
+        return array('code' => $this->user_table->update($data));
+    }
 }

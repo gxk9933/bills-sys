@@ -1,6 +1,6 @@
 <{include file="header.tpl"}>
 <form method="post" id="bill_edit_form" action="index.php?ctrl=bill&act=edit_submit" enctype="multipart/form-data">
-    <table class="itable">
+    <table class="itable"><tbody>
         <tr>
           <th>日期</th>
           <td>
@@ -27,41 +27,68 @@
         </tr>
         <tr>
           <th>上传凭证</th>
-          <td><input type="file" name="file"/></td>
+          <td><input type="file" name="file"/>(20M)</td>
+        </tr>
+        <tr>
+          <th>上传进度</th>
+          <td>
+<div class="progress">
+    <div class="bar"></div >
+    <div class="percent">0%</div >
+</div>
+<style type="text/css">
+.progress { position:relative; width:400px; border: 1px solid #ddd; padding: 1px; border-radius: 3px; }
+.bar { background-color: #B4F5B4; width:0%; height:20px; border-radius: 3px; }
+.percent { position:absolute; display:inline-block; top:3px; left:48%; }
+</style>
+          </td>
         </tr>
         <tr>
           <th>备注</th>
           <td><textarea type="text" name="remark" style="width:400px;height:100px;"><{$bill.remark}></textarea></td>
         </tr>
-        <!-- <tr>
-          <th>状态</th>
-          <td><select name="status">
-          <option value="1">待确认</option>
-          <option value="2">已确认</option>
-          </select></td>
-        </tr> -->
         <tr>
           <td>
           <input value="1" name="status" type="hidden"/></td>
           <td><input type="submit" value="确定提交" id="bill_edit_submit"/></td>
         </tr>
        
-      </table>
+      </tbody></table>
  </form>
  
 <script type="text/javascript">
 $('.datepicker').datepicker();
+var bar = $('.bar');
+var percent = $('.percent');
 $('#bill_edit_form').ajaxForm({
 	beforeSend: function() {
+		//upload
+		var percentVal = '0%';
+        bar.width(percentVal)
+        percent.html(percentVal);
+
+        
 		$("#bill_edit_submit").attr("disabled", "disabled");
     },
+    uploadProgress: function(event, position, total, percentComplete) {
+    	//upload
+        var percentVal = percentComplete + '%';
+        bar.width(percentVal)
+        percent.html(percentVal);
+    },
     complete: function(xhr) {
+        //upload
+    	var percentVal = '100%';
+        bar.width(percentVal)
+        percent.html(percentVal);
+
+        
     	$("#bill_edit_submit").attr("disabled", false);
         var msg = xhr.responseText;//JSON.parse();
-        if(msg > 0){
+        if(msg == 'success'){
         	alert('添加成功');
         }else{
-        	alert('添加失败' + msg);
+        	alert('添加失败:' + msg);
         }
     }
 });

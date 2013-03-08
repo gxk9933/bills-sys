@@ -459,7 +459,7 @@ class base {
 	    if(empty($searchFields))return true;
 	    foreach($searchFields as $key=>$searchField){
 	        empty($searchField['type']) && $searchField['type'] = 'input';
-	        $types = array('input', 'date', 'range', 'select', 'range_date', 'range_time');
+	        $types = array('input', 'date', 'range', 'select', 'range_date', 'range_time', 'year_month');
 	        //类型限制
 	        if(!in_array($searchField['type'], $types)){
 	            return false;

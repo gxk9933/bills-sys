@@ -28,7 +28,10 @@ window.onload = function()
 	item11 = new TaskMenuItem("添加流水账","style/images/task_menu/copy.gif","parent.window.frames[1].location.href='index.php?ctrl=bill&act=edit'");
 	item12 = new TaskMenuItem("查看流水账","style/images/task_menu/friends.gif","parent.window.frames[1].location.href='index.php?ctrl=bill&act=bills'");
 
-	item51 = new TaskMenuItem("密码修改","style/images/task_menu/dload.gif","parent.window.frames[1].location.href='index.php?ctrl=index&act=home'");
+	item13 = new TaskMenuItem("添加新业务","style/images/task_menu/copy.gif","parent.window.frames[1].location.href='index.php?ctrl=business&act=edit'");
+	item14 = new TaskMenuItem("查看业务","style/images/task_menu/friends.gif","parent.window.frames[1].location.href='index.php?ctrl=business&act=items'");
+
+	item51 = new TaskMenuItem("密码修改","style/images/task_menu/dload.gif","parent.window.frames[1].location.href='index.php?ctrl=user&act=change_password'");
 	item52 = new TaskMenuItem("退出","style/images/task_menu/update.gif","parent.window.location.href='index.php?ctrl=index&act=login'");
 
 	////////////////////////////////////////////////
@@ -40,6 +43,8 @@ window.onload = function()
 	taskMenu2 = new TaskMenu("常规管理");
 	taskMenu2.add(item11);
 	taskMenu2.add(item12);
+	taskMenu2.add(item13);
+	taskMenu2.add(item14);
 	taskMenu2.init();
 
 

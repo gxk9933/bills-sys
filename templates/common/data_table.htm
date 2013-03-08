@@ -44,6 +44,9 @@
 				    <option value="<{$key}>"><{$item}></option>
 				    <{/foreach}>
 				    </select>
+			    <{elseif $item.type == 'year_month'}>
+			    	<input size="4" style="width:45px;"/>年
+			    	<input size="2" style="width:30px;"/>月
 			    <{/if}>
 		    </div>
 	    <{/foreach}>
@@ -127,7 +130,7 @@ $('#<{$otherData.id}> .datatable_search_button').click(function(){
 		var value = '';
 		if(type == 'input' || type == 'select'){
 			value = $(this).find(type).val();
-		}else if(in_array(type, ['range', 'range_date', 'range_time'])){
+		}else if(in_array(type, ['range', 'range_date', 'range_time', 'year_month'])){
 			var range = new Array();
 			$(this).find('input').each(function(){
 				range.push($(this).val());
@@ -144,5 +147,14 @@ $('#<{$otherData.id}> .datatable_search_button').click(function(){
 	<{if $otherData.js}><{$otherData.js}><{/if}>
 	setTimeout('$("#<{$otherData.id}> .datatable_search_button").attr("disabled", false);', 2000);
 });
+function in_array(stringToSearch, arrayToSearch) {
+	for (s = 0; s < arrayToSearch.length; s++) {
+		thisEntry = arrayToSearch[s].toString();
+		if (thisEntry == stringToSearch) {
+			return true;
+		}
+	}
+	return false;
+}
 </script>
 <{include file="footer.tpl"}>

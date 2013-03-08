@@ -8,21 +8,37 @@ class bill{
     
     
     function add($date, $title, $type, $money, $remark, $status){
-    	//查询余额
-    	$last = $this->bill_table->getList ('*', '1', 0, 1, 'bill_id DESC');
-    	$remain_money = $type == 1? $money: -$money;
-    	$remain_money = $remain_money + intval($last[0]['remain_money']);
-    	
     	//上传凭证
     	if($_FILES){
+    		if($_FILES['file']['error'] > 0){
+	    		switch($_FILES['file']['error']) {   
+				    case 1:    
+				        return '文件大小超出了服务器的空间大小';
+					case 2:    
+						return '要上传的文件大小超出浏览器限制';   
+					case 3:
+						return '文件仅部分被上传'; 
+					case 4:
+						return '没有找到要上传的文件';
+					case 5:
+						return '服务器临时文件夹丢失';
+					case 6:
+						return '文件写入到临时文件夹出错';
+				}
+    		}
 	    	include(ROOT."/library/UploadFile.class.php");
-	        $UploadFile = new UploadFile(1024*1024*2, null, '', 'writable/upload/'.date('Y-m').'/', 'upload_rename_rule');
+	        $UploadFile = new UploadFile(1024*1024*20, null, '', 'writable/upload/'.date('Y-m').'/', 'upload_rename_rule');
 	        $UploadFile -> upload();
 	        $file_info = $UploadFile -> getUploadFileInfo();
 	        $file_info = $file_info[0];
 	        $file_path = trim($file_info['savepath'].$file_info['savename']);
     	}
         
+    	//查询余额
+    	$last = $this->bill_table->getList ('*', '1', 0, 1, 'bill_id DESC');
+    	$remain_money = $type == 1? $money: -$money;
+    	$remain_money = $remain_money + intval($last[0]['remain_money']);
+    	
         $data = array(
         	'date' => $date,
         	'title' => $title,
@@ -36,7 +52,8 @@ class bill{
         	'add_user' => $_SESSION['bills_username'],
         	'created' => $this->base->current_time
         );
-    	return $this->bill_table->insert($data);
+    	$result = $this->bill_table->insert($data);
+    	return $result? 'success': 'faile';
     }
     
     function confirm_bill($bill_id){
