@@ -34,6 +34,8 @@ class control extends base{
             'keyword' => array('title' => '关键字'),
 			'bill_status' => array('title' => '订单状态', 'type' => 'select', 'value' => array('0' => '全部状态') + $this->businessClass->bill_status()),
 			'end_time' => array('title' => '到期时间', 'type' => 'year_month'),
+			'cost_type' => array('title' => '付款类型', 'type' => 'select', 'value' => array('0' => '全部类型') + $this->businessClass->cost_type()),
+			'tax_type' => array('title' => '缴税类别', 'type' => 'select', 'value' => array('0' => '全部类别') + $this->businessClass->tax_type()),
 		
 	    );
 	    
@@ -68,7 +70,7 @@ class control extends base{
 		$pageStart = intval($_GET['iDisplayStart']);
 		
 		$where = array();
-	    for($i = 0; $i <= 2; $i++){
+	    for($i = 0; $i <= 4; $i++){
 	        if($_GET['sSearch_'.$i]){
 	            $value = trim($_GET['sSearch_'.$i]);
 	            switch ($i){
@@ -88,6 +90,12 @@ class control extends base{
 	                        $where[] = "`end_time` >= '{$gt}' AND `end_time` < '$lt'";
                     	}
                         break;
+                    case 3:
+	                	$where[] = "`cost_type` = {$value}";
+	                	break;
+	                case 4:
+	                	$where[] = "`tax_type` = {$value}";
+	                	break;
 	            }
 	        }
 	    }

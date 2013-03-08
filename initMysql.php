@@ -105,19 +105,19 @@ CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."user (
 `last_login_ip` VARCHAR(128) NOT NULL DEFAULT '' COMMENT '最后登录ip',
 `data` TEXT COMMENT '其他数据',
 PRIMARY KEY `uid` (`uid`),
-INDEX `username` (`username`)
+UNIQUE INDEX `username` (`username`)
 )ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户表';
 ";
 $mysqli->query($sql);
 
 
 
-$sql = "INSERT INTO ".TABLE_PREFIX."user (`username`, `password`, `groupid`, `name`, `created`) 
-VALUES ('admin', MD5('admin@bills#20130220'), 1, '管理员', UNIX_TIMESTAMP());";
+$sql = "INSERT INTO ".TABLE_PREFIX."user (`uid`, `username`, `password`, `groupid`, `name`, `created`) 
+VALUES (1, 'admin', MD5('admin@bills#20130220'), 1, '管理员', UNIX_TIMESTAMP());";
 $mysqli->query($sql);
 
-$sql = "INSERT INTO ".TABLE_PREFIX."user (`username`, `password`, `groupid`, `name`, `created`) 
-VALUES ('记账员', MD5('editor@bills#20130220'), 2, '记账员', UNIX_TIMESTAMP());";
+$sql = "INSERT INTO ".TABLE_PREFIX."user (`uid`, `username`, `password`, `groupid`, `name`, `created`) 
+VALUES (2, '记账员', MD5('editor@bills#20130220'), 2, '记账员', UNIX_TIMESTAMP());";
 $mysqli->query($sql);
 
 echo "end file:\t".__FILE__."\t".date('Y-m-d H:i:s')."\n";
